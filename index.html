@@ -3,269 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI News Anchor - Generator Berita</title>
+    <title>AI News Anchor - Server Powered</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
-        
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            margin: 0; 
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #7f1d1d 100%);
-            min-height: 100vh;
-            color: white;
-        }
-
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-
-        .input-field {
-            background: rgba(255, 255, 255, 0.05);
-            color: #f8fafc;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .input-field::placeholder {
-            color: rgba(255,255,255,0.4);
-        }
-
-        .input-field:focus {
-            border-color: #ef4444;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
-            outline: none;
-        }
-
-        .input-field option {
-            background-color: #1e293b;
-            color: white;
-        }
-
-        .btn-news {
-            background: linear-gradient(to right, #dc2626, #b91c1c);
-            color: white;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 0 #7f1d1d;
-        }
-
-        .btn-news:hover:not(:disabled) {
-            background: linear-gradient(to right, #ef4444, #dc2626);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 0 #7f1d1d;
-        }
-
-        .btn-news:active:not(:disabled) {
-            transform: translateY(2px);
-            box-shadow: 0 0 0 #7f1d1d;
-        }
-
-        .btn-news:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-
-        .output-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 4px solid #ef4444;
-            padding: 16px;
-            margin-bottom: 16px;
-            border-radius: 0 12px 12px 0;
-            font-family: 'Merriweather', serif;
-        }
-
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #ffffff;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-        
-        .live-badge {
-            background: #dc2626;
-            color: white;
-            animation: pulse-red 2s infinite;
-        }
-        
-        @keyframes pulse-red {
-            0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: white; min-height: 100vh; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .input-field { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 12px; width: 100%; color: white; outline: none; }
+        .btn-news { background: #ef4444; font-weight: 800; padding: 12px; border-radius: 12px; width: 100%; transition: 0.3s; }
+        .btn-news:hover { background: #dc2626; }
+        .output-card { background: rgba(255,255,255,0.05); border-left: 4px solid #ef4444; padding: 15px; margin-bottom: 10px; border-radius: 0 8px 8px 0; font-family: 'Merriweather', serif; }
     </style>
 </head>
-<body class="p-4 md:p-8">
-
+<body class="p-8">
     <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-10">
-            <div class="inline-flex items-center gap-2 live-badge px-3 py-1 rounded-sm text-[10px] font-black uppercase tracking-widest mb-4">
-                <div class="w-2 h-2 bg-white rounded-full"></div> LIVE
+        <h1 class="text-3xl font-black text-center mb-8 uppercase tracking-tighter">AI News <span class="text-red-500">Anchor</span> (Secure)</h1>
+        
+        <div class="grid lg:grid-cols-2 gap-8">
+            <div class="glass-panel p-6 space-y-4">
+                <input id="nTopic" class="input-field" placeholder="Topik Berita">
+                <textarea id="nFacts" class="input-field h-32" placeholder="Fakta-fakta utama..."></textarea>
+                <div class="grid grid-cols-2 gap-4">
+                    <select id="styleSelect" class="input-field">
+                        <option value="Formal">Formal</option>
+                        <option value="Breaking News">Breaking News</option>
+                    </select>
+                    <select id="voiceSelect" class="input-field">
+                        <option value="Charon">Charon (Pria)</option>
+                        <option value="Kore">Kore (Wanita)</option>
+                    </select>
+                </div>
+                <button id="genBtn" onclick="handleGenerate()" class="btn-news">SUSUN NASKAH</button>
             </div>
-            <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-2 drop-shadow-lg text-white">
-                AI NEWS <span class="text-red-500">ANCHOR</span>
-            </h1>
-            <p class="text-sm font-medium opacity-80 text-blue-200">
-                Studio Produksi & Pembaca Berita Otomatis
-            </p>
-        </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div class="lg:col-span-5 space-y-6">
-                <div class="glass-panel p-6 md:p-8">
-                    <div class="space-y-5">
-                        <div>
-                            <label class="block text-[11px] font-bold uppercase tracking-wider mb-2 text-blue-300">Topik / Kejadian</label>
-                            <input id="nTopic" type="text" class="input-field w-full px-4 py-3 rounded-xl font-medium" placeholder="Contoh: Peluncuran Roket ke Mars">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold uppercase tracking-wider mb-2 text-blue-300">Fakta Utama</label>
-                            <textarea id="nFacts" class="input-field w-full px-4 py-3 rounded-xl font-medium h-32 resize-none" placeholder="Masukkan poin-poin berita di sini..."></textarea>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[11px] font-bold uppercase tracking-wider mb-2 text-blue-300">Gaya</label>
-                                <select id="styleSelect" class="input-field w-full px-4 py-3 rounded-xl font-medium text-sm">
-                                    <option value="Straight News Formal">Formal</option>
-                                    <option value="Breaking News Urgent">Breaking News</option>
-                                    <option value="Infotainment Santai">Santai</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold uppercase tracking-wider mb-2 text-blue-300">Suara</label>
-                                <select id="voiceSelect" class="input-field w-full px-4 py-3 rounded-xl font-medium text-sm">
-                                    <option value="Charon">Charon (Pria)</option>
-                                    <option value="Kore">Kore (Wanita)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <button id="genBtn" onclick="handleGenerate()" class="btn-news w-full py-4 rounded-xl flex justify-center items-center gap-2 mt-4">
-                            <span id="genText">Tulis Naskah</span>
-                            <div id="genSpin" class="spinner hidden"></div>
-                        </button>
+            <div class="glass-panel p-6">
+                <div class="flex justify-between mb-4">
+                    <h2 class="font-bold">Teleprompter</h2>
+                    <div id="controls" class="hidden flex gap-2">
+                        <button onclick="handleTTS()" class="bg-blue-600 px-3 py-1 rounded text-xs font-bold">PUTAR SUARA</button>
                     </div>
                 </div>
-            </div>
-
-            <div class="lg:col-span-7">
-                <div class="glass-panel p-6 md:p-8 flex flex-col min-h-[500px]">
-                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                        <h2 class="text-sm font-bold uppercase tracking-widest text-white">Teleprompter</h2>
-                        <div class="flex gap-2">
-                            <button id="ttsBtn" onclick="handleTTS()" class="hidden text-[10px] font-bold bg-blue-600 px-4 py-2 rounded-lg uppercase">Putar Suara</button>
-                            <button id="dlBtn" onclick="downloadAudio()" class="hidden text-[10px] font-bold bg-red-600 px-4 py-2 rounded-lg uppercase">Download</button>
-                        </div>
-                    </div>
-                    <div id="output" class="space-y-4 overflow-y-auto max-h-[600px] custom-scrollbar">
-                        <!-- Output akan muncul di sini -->
-                    </div>
+                <div id="output" class="space-y-2 text-sm leading-relaxed">
+                    <p class="opacity-30 italic">Naskah akan muncul di sini...</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // API Key telah dimasukkan
-        const apiKey = "AIzaSyCijOKszthaZ6lawhfBDWJrIPKSXnS_oq4"; 
+        const SERVER_URL = "http://localhost:3000"; // Sesuaikan dengan URL server Anda
         let currentScript = null;
-        let lastAudioBlob = null;
-        let currentAudio = null;
 
         async function handleGenerate() {
-            if (!apiKey) return alert("AIzaSyCijOKszthaZ6lawhfBDWJrIPKSXnS_oq4");
-            
             const topic = document.getElementById('nTopic').value;
             const facts = document.getElementById('nFacts').value;
             const style = document.getElementById('styleSelect').value;
-            
-            if (!topic || !facts) return alert("Isi topik dan fakta!");
 
-            const btn = document.getElementById('genBtn');
-            const spin = document.getElementById('genSpin');
-            const output = document.getElementById('output');
+            if(!topic || !facts) return alert("Lengkapi data!");
 
-            btn.disabled = true;
-            spin.classList.remove('hidden');
-            output.innerHTML = `<div class="text-center py-10 animate-pulse text-blue-300">Menyusun naskah...</div>`;
-
-            const system = "Kamu adalah penulis naskah berita TV. Buat JSON: {headline, lead, body, closing}. Bahasa Indonesia profesional.";
+            document.getElementById('output').innerHTML = "Sedang menulis...";
             
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                const response = await fetch(`${SERVER_URL}/api/generate-news`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: `Topik: ${topic}. Fakta: ${facts}. Gaya: ${style}` }] }],
-                        systemInstruction: { parts: [{ text: system }] },
-                        generationConfig: { responseMimeType: "application/json" }
-                    })
+                    body: JSON.stringify({ topic, facts, style })
                 });
-
                 const data = await response.json();
                 currentScript = JSON.parse(data.candidates[0].content.parts[0].text);
                 
-                output.innerHTML = `
+                document.getElementById('output').innerHTML = `
                     <div class="output-card"><strong>${currentScript.headline}</strong></div>
-                    <div class="output-card italic">${currentScript.lead}</div>
+                    <div class="output-card">${currentScript.lead}</div>
                     <div class="output-card">${currentScript.body}</div>
-                    <div class="output-card opacity-70">${currentScript.closing}</div>
+                    <div class="output-card opacity-60">${currentScript.closing}</div>
                 `;
-                
-                document.getElementById('ttsBtn').classList.remove('hidden');
+                document.getElementById('controls').classList.remove('hidden');
             } catch (err) {
-                output.innerHTML = "Terjadi kesalahan koneksi API.";
-            } finally {
-                btn.disabled = false;
-                spin.classList.add('hidden');
+                alert("Server tidak merespons. Pastikan Node.js sudah dijalankan.");
             }
         }
 
         async function handleTTS() {
             const voice = document.getElementById('voiceSelect').value;
-            const textToRead = `${currentScript.lead} ${currentScript.body} ${currentScript.closing}`;
+            const text = `${currentScript.lead} ${currentScript.body} ${currentScript.closing}`;
 
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
+                const response = await fetch(`${SERVER_URL}/api/generate-tts`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: textToRead }] }],
-                        generationConfig: {
-                            responseModalities: ["AUDIO"],
-                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } }
-                        }
-                    })
+                    body: JSON.stringify({ text, voice })
                 });
-
                 const data = await response.json();
-                const audioBase64 = data.candidates[0].content.parts[0].inlineData.data;
+                const audioData = data.candidates[0].content.parts[0].inlineData.data;
                 
-                // Konversi PCM ke WAV sederhana (asumsi 24kHz)
-                lastAudioBlob = pcmToWav(audioBase64, 24000);
-                const url = URL.createObjectURL(lastAudioBlob);
-                if (currentAudio) currentAudio.pause();
-                currentAudio = new Audio(url);
-                currentAudio.play();
-                document.getElementById('dlBtn').classList.remove('hidden');
+                const blob = pcmToWav(audioData, 24000);
+                const audio = new Audio(URL.createObjectURL(blob));
+                audio.play();
             } catch (err) {
                 alert("Gagal memproses suara.");
             }
@@ -292,14 +126,6 @@
             view.setUint32(36, 0x64617461, false);
             view.setUint32(40, pcmData.length, true);
             return new Blob([header, pcmData], { type: 'audio/wav' });
-        }
-
-        function downloadAudio() {
-            if (!lastAudioBlob) return;
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(lastAudioBlob);
-            a.download = "berita-ai.wav";
-            a.click();
         }
     </script>
 </body>
